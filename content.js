@@ -12,7 +12,8 @@
   const BTN_W = 45;            // 按钮宽度（px）
   const BTN_H = 45;            // 按钮高度（px）
   const DOCK_THRESHOLD = 36;   // 距左右边缘小于该值时贴边隐藏
-  const HIDE_RATIO = 0.55;     // 贴边时隐藏的宽度比例
+  const HIDE_RATIO = 0.55;     // 贴边时隐藏的比例（左/右方向）
+  const HIDE_RATIO_TOP = 0.7;  // 顶部贴边时隐藏的比例（隐藏更多，露出更少）
   const EDGE_GAP = 6;          // 贴边弹出后与浏览器边缘保留的距离（px）
   const HIT_EXT = 20;          // 贴边隐藏时隐形热区向屏幕内侧延伸的距离（px）
   const HIT_EXT_WIDE = 44;     // 右侧贴边时向左（屏幕内侧）的加大触发距离（px）
@@ -153,7 +154,7 @@
                       opacity 0.2s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="top"]) button {
-          transform: translateY(-${HIDE_RATIO * 100}%);
+          transform: translateY(-${HIDE_RATIO_TOP * 100}%);
           opacity: 0.4;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
                       opacity 0.2s ease, box-shadow 0.2s ease;
@@ -459,11 +460,10 @@
     //    让 :hover 的过渡从隐藏态重新播放一遍
     requestAnimationFrame(() => {
       if (!btnEl || !btnEl.matches(":hover")) return;
-      const HIDE_PCT = HIDE_RATIO * 100;
       const hiddenTf =
-        docked === "right" ? "translateX(" + HIDE_PCT + "%)" :
-        docked === "left" ? "translateX(-" + HIDE_PCT + "%)" :
-                            "translateY(-" + HIDE_PCT + "%)";
+        docked === "right" ? "translateX(" + (HIDE_RATIO * 100) + "%)" :
+        docked === "left" ? "translateX(-" + (HIDE_RATIO * 100) + "%)" :
+                            "translateY(-" + (HIDE_RATIO_TOP * 100) + "%)";
       btnEl.style.setProperty("transition", "none", "important");
       btnEl.style.transform = hiddenTf;
       void btnEl.offsetHeight; // 强制回流，提交复位样式
