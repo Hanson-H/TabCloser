@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "TabCloser",
+  "version": "1.5.8",
+  "description": "贴边隐藏的浮动按钮，悬停弹出，点击即可关闭当前标签页。",
+  "permissions": ["tabs", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "options.html",
+    "default_title": "浮动按钮关闭标签页（点击图标可设置）"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

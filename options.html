@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TabCloser - 设置</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --text: #1f2329;
+      --text-2: #646a73;
+      --text-3: #8f959e;
+      --line: #eef0f3;
+      --primary: #3370ff;
+      --primary-weak: #eef3ff;
+      --primary-deep: #2b5fd9;
+      --success: #00b42a;
+      --radius: 14px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #1d1f23;
+        --card: #26282e;
+        --text: #e8eaed;
+        --text-2: #a8adb5;
+        --text-3: #7a808a;
+        --line: #34373d;
+        --primary: #4c83ff;
+        --primary-weak: #253049;
+        --primary-deep: #6d9aff;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 360px;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== 头部卡片 ===== */
+    .header {
+      position: relative;
+      /* 紫罗兰渐变：与蓝色插件图标形成邻近色对比，logo 突出 */
+      background: linear-gradient(135deg, #5330c9 0%, #6f4ae0 55%, #8f6bf0 100%);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(83, 48, 201, 0.3);
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -46px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      right: 26px;
+      bottom: -58px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .header .ver {
+      font-size: 10px;
+      opacity: 0.85;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 1px 8px;
+      margin-left: 6px;
+      font-weight: 400;
+      vertical-align: 1px;
+    }
+
+    .status {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      opacity: 0.95;
+    }
+
+    .status .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+      animation: pulse 2s infinite;
+    }
+
+    .status.off .dot {
+      animation: none;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+      70% { box-shadow: 0 0 0 7px rgba(255, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    /* ===== 设置卡片 ===== */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      margin-top: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      padding: 12px 16px 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      transition: background 0.15s;
+    }
+
+    .row + .row {
+      border-top: 1px solid var(--line);
+    }
+
+    .row:hover {
+      background: color-mix(in srgb, var(--primary) 4%, transparent);
+    }
+
+    .row .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row .name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .row .desc {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-top: 3px;
+      line-height: 1.45;
+    }
+
+    .row.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* ===== 重置按钮 ===== */
+    .btn-reset {
+      flex-shrink: 0;
+      padding: 6px 16px;
+      border: 1px solid var(--primary);
+      border-radius: 14px;
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-reset:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-reset:active {
+      opacity: 0.8;
+    }
+
+    /* ===== 开关 ===== */
+    .switch {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .track {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: #c9cdd4;
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .track::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .switch input:checked + .track {
+      background: var(--primary);
+    }
+
+    .switch input:checked + .track::before {
+      transform: translateX(18px);
+    }
+
+    .switch input:focus-visible + .track {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* ===== 按钮预览 ===== */
+    .preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 16px 18px;
+    }
+
+    .demo-btn {
+      all: initial;
+      box-sizing: border-box;
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      border: none;
+      background: var(--btn-color, #48484a);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      opacity: 0.85;
+      transition: background 0.15s, box-shadow 0.15s, opacity 0.15s;
+    }
+
+    .demo-btn svg {
+      display: block;
+    }
+
+    .demo-btn:hover {
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      opacity: 0.85;
+    }
+
+    /* ===== 颜色选择 ===== */
+    .color-row {
+      display: flex;
+      gap: 16px;
+      padding: 10px 16px 16px;
+    }
+
+    .color-swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.12);
+    }
+
+    .color-swatch.active {
+      box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--primary);
+    }
+
+    .preview-tip {
+      font-size: 11px;
+      color: var(--text-3);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ===== 底部提示 ===== */
+    .footer {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      background: var(--primary-weak);
+      border-radius: 10px;
+      font-size: 11px;
+      color: var(--primary-deep);
+      line-height: 1.55;
+    }
+
+    .footer .icon {
+      flex-shrink: 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- 头部 -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo"><img src="icons/icon128.png" alt="TabCloser" /></div>
+      <h1>浮动按钮关闭标签页<span class="ver">v1.5.8</span></h1>
+    </div>
+    <div class="status" id="status">
+      <span class="dot"></span>
+      <span id="statusText">运行中 · 悬停弹出，点击关闭标签页</span>
+    </div>
+  </div>
+
+  <!-- 设置 -->
+  <div class="card">
+    <div class="card-title">通用</div>
+    <div class="row">
+      <div class="info">
+        <div class="name">显示浮动关闭按钮</div>
+        <div class="desc">关闭后，网页中不再显示浮动按钮</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="enabled" />
+        <span class="track"></span>
+      </label>
+    </div>
+    <div class="row">
+      <div class="info">
+        <div class="name">重置按钮位置</div>
+        <div class="desc">按钮回到页面顶部中央贴边隐藏（对所有网页生效）</div>
+      </div>
+      <button class="btn-reset" id="resetPos">重置</button>
+    </div>
+  </div>
+
+  <!-- 按钮颜色 -->
+  <div class="card">
+    <div class="card-title">按钮颜色</div>
+    <div class="color-row" id="colorRow">
+      <button class="color-swatch" data-color="#48484a" data-name="深空石墨" title="深空石墨" aria-label="深空石墨" style="background:#48484a"></button>
+      <button class="color-swatch" data-color="#007aff" data-name="系统蓝" title="系统蓝" aria-label="系统蓝" style="background:#007aff"></button>
+    </div>
+  </div>
+
+  <!-- 按钮预览 -->
+  <div class="card">
+    <div class="card-title">按钮预览</div>
+    <div class="preview" id="previewArea">
+      <button class="demo-btn" id="demoBtn" title="预览按钮">
+        <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+        </svg>
+      </button>
+      <div class="preview-tip" id="previewTip">这就是网页中显示的按钮 · 可拖动到任意位置，位置自动保存</div>
+    </div>
+  </div>
+
+  <!-- 底部提示 -->
+  <div class="footer">
+    <span class="icon">💡</span>
+    <span>按钮默认贴边隐藏在页面顶部中央（半隐藏，悬停自动弹出），挡住内容时直接拖走即可；拖到屏幕上/左/右边缘都会贴边隐藏。点击即关闭当前标签页，拖动不会触发关闭。修改设置后立即生效，无需刷新页面。</span>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
