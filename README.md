@@ -22,13 +22,13 @@
 1. 打开 Chrome，地址栏输入 `chrome://extensions/` 回车
 2. 打开右上角的 **开发者模式** 开关
 3. 点击左上角 **加载已解压的扩展程序**
-4. 选择本文件夹（`double-click-close-tab`）
+4. 选择本文件夹（`tab-closer`）
 5. 安装完成，打开任意网页即可看到右下角的浮动按钮
 
 ## 文件结构
 
 ```
-double-click-close-tab/
+tab-closer/
 ├── manifest.json    # 扩展清单（Manifest V3）
 ├── background.js    # Service Worker：执行关闭标签页操作
 ├── content.js       # 内容脚本：注入浮动按钮（Shadow DOM 隔离）
