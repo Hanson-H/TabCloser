@@ -12,13 +12,13 @@
   const BTN_W = 45;            // 按钮宽度（px）
   const BTN_H = 45;            // 按钮高度（px）
   const DOCK_THRESHOLD = 36;   // 距左右边缘小于该值时贴边隐藏
-  const HIDE_RATIO = 0.55;     // 贴边时隐藏的比例（左/右方向）
+  const HIDE_RATIO = 0.5;      // 贴边时隐藏的比例（左/右方向）
   const HIDE_RATIO_TOP = 0.8;  // 顶部贴边时隐藏的比例（隐藏更多，露出更少）
   const EDGE_GAP = 6;          // 贴边弹出后与浏览器边缘保留的距离（px）
   const HIT_EXT = 20;          // 贴边隐藏时隐形热区向屏幕内侧延伸的距离（px）
   const HIT_EXT_WIDE = 44;     // 右侧贴边时向左（屏幕内侧）的加大触发距离（px）
 
-  let settings = { enabled: true, color: "#48484a" };
+  let settings = { enabled: true, color: "#8e8e93" };
   let pos = null; // { x, y, docked: 'left' | 'right' | 'top' | null }；null 时使用默认位置
 
   let host = null;
@@ -31,7 +31,7 @@
   // 这正是新开页面按钮位置不一致、出现移动动画残留的根源
   let loaded = { settings: false, pos: false };
 
-  chrome.storage.sync.get({ enabled: true, color: "#48484a" }, (items) => {
+  chrome.storage.sync.get({ enabled: true, color: "#8e8e93" }, (items) => {
     settings = items;
     loaded.settings = true;
     initWhenReady();
@@ -113,16 +113,16 @@
           width: ${BTN_W}px;
           height: ${BTN_H}px;
           border-radius: 10px;
-          /* 按钮颜色由设置项动态注入（CSS 变量，默认深空石墨） */
+          /* 按钮颜色由设置项动态注入（CSS 变量，默认中灰） */
           border: none;
-          background: var(--btn-color, #48484a);
-          color: #fff;
+          background: var(--btn-color, #8e8e93);
+          color: var(--btn-icon-color, #ffffff);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-          opacity: 0.85;
+          opacity: 0.75;
           -webkit-user-select: none;
           user-select: none;
           touch-action: none;
@@ -131,7 +131,7 @@
         }
         button:hover {
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-          opacity: 0.85;
+          opacity: 0.75;
         }
         button:active {
           background: var(--btn-color-active, #3a3a3c);
@@ -143,37 +143,37 @@
            两个方向分开调校，进出都顺滑不拖泥带水 */
         :host([data-docked="right"]) button {
           transform: translateX(${HIDE_RATIO * 100}%);
-          opacity: 0.4;
+          opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
                       opacity 0.2s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="left"]) button {
           transform: translateX(-${HIDE_RATIO * 100}%);
-          opacity: 0.4;
+          opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
                       opacity 0.2s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="top"]) button {
           transform: translateY(-${HIDE_RATIO_TOP * 100}%);
-          opacity: 0.65;
+          opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
                       opacity 0.2s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="right"]) button:hover {
           transform: translateX(-${EDGE_GAP}px);
-          opacity: 0.8;
+          opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
                       opacity 0.25s ease, box-shadow 0.3s ease;
         }
         :host([data-docked="left"]) button:hover {
           transform: translateX(${EDGE_GAP}px);
-          opacity: 0.8;
+          opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
                       opacity 0.25s ease, box-shadow 0.3s ease;
         }
         :host([data-docked="top"]) button:hover {
           transform: translateY(${EDGE_GAP}px);
-          opacity: 0.8;
+          opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
                       opacity 0.25s ease, box-shadow 0.3s ease;
         }
@@ -232,7 +232,7 @@
     document.documentElement.appendChild(host);
   }
 
-  // 应用按钮颜色（主色 + 按下态的加深色），通过 CSS 变量注入 Shadow DOM。
+  // 应用按钮颜色（主色 + 按下态的加深色 + 图标色），通过 CSS 变量注入 Shadow DOM。
   // 按下态用 color-mix 把主色压暗，颜色切换后无需重建按钮即可即时生效
   function applyColor() {
     if (!host) return;
@@ -241,6 +241,18 @@
       "--btn-color-active",
       "color-mix(in srgb, " + settings.color + " 82%, #000)"
     );
+    host.style.setProperty("--btn-icon-color", iconColorFor(settings.color));
+  }
+
+  // 根据背景亮度自动选择图标色：浅色背景用深灰图标，深色背景用白图标
+  function iconColorFor(color) {
+    const m = /^#([0-9a-f]{6})$/i.exec(color || "");
+    if (!m) return "#ffffff";
+    const r = parseInt(m[1].slice(0, 2), 16);
+    const g = parseInt(m[1].slice(2, 4), 16);
+    const b = parseInt(m[1].slice(4, 6), 16);
+    const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return lum > 0.6 ? "#3a3a3c" : "#ffffff";
   }
 
   // ---------- 位置管理 ----------
