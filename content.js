@@ -145,37 +145,37 @@
           transform: translateX(${HIDE_RATIO * 100}%);
           opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
-                      opacity 0.2s ease, box-shadow 0.2s ease;
+                      opacity 0.26s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="left"]) button {
           transform: translateX(-${HIDE_RATIO * 100}%);
           opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
-                      opacity 0.2s ease, box-shadow 0.2s ease;
+                      opacity 0.26s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="top"]) button {
           transform: translateY(-${HIDE_RATIO_TOP * 100}%);
           opacity: 0.6;
           transition: transform 0.26s cubic-bezier(0.55, 0, 0.3, 1),
-                      opacity 0.2s ease, box-shadow 0.2s ease;
+                      opacity 0.26s ease, box-shadow 0.2s ease;
         }
         :host([data-docked="right"]) button:hover {
           transform: translateX(-${EDGE_GAP}px);
           opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
-                      opacity 0.25s ease, box-shadow 0.3s ease;
+                      opacity 0.42s ease, box-shadow 0.3s ease;
         }
         :host([data-docked="left"]) button:hover {
           transform: translateX(${EDGE_GAP}px);
           opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
-                      opacity 0.25s ease, box-shadow 0.3s ease;
+                      opacity 0.42s ease, box-shadow 0.3s ease;
         }
         :host([data-docked="top"]) button:hover {
           transform: translateY(${EDGE_GAP}px);
           opacity: 0.85;
           transition: transform 0.42s cubic-bezier(0.34, 1.45, 0.5, 1),
-                      opacity 0.25s ease, box-shadow 0.3s ease;
+                      opacity 0.42s ease, box-shadow 0.3s ease;
         }
         /* 隐形热区：贴边隐藏时向屏幕内侧延伸 HIT_EXT px，
            悬停/点击更容易命中（伪元素跟随按钮的 transform 移动，
