@@ -50,6 +50,25 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ===== 滚动条美化 ===== */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--text-3);
+      border-radius: 5px;
+      border: 3px solid var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-2);
+    }
+
     /* ===== 头部卡片 ===== */
     .header {
       position: relative;

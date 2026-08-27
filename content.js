@@ -12,7 +12,7 @@
   const BTN_W = 45;            // 按钮宽度（px）
   const BTN_H = 45;            // 按钮高度（px）
   const DOCK_THRESHOLD = 36;   // 距左右边缘小于该值时贴边隐藏
-  const HIDE_RATIO = 0.5;      // 贴边时隐藏的比例（左/右方向）
+  const HIDE_RATIO = 0.75;     // 贴边时隐藏的比例（左/右方向）
   const HIDE_RATIO_TOP = 0.8;  // 顶部贴边时隐藏的比例（隐藏更多，露出更少）
   const EDGE_GAP = 6;          // 贴边弹出后与浏览器边缘保留的距离（px）
   const HIT_EXT = 20;          // 贴边隐藏时隐形热区向屏幕内侧延伸的距离（px）
